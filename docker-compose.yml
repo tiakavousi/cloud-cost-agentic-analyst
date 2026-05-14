@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # 1. The Database (Your original config)
+  db:
+    image: ankane/pgvector:latest
+    container_name: cloud-cost-agentic-analyst_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: securepassword123
+      POSTGRES_DB: vectordb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # 2. The Backend (FastAPI)
+  backend:
+    build: 
+      context: ./backend
+    env_file:
+      - ./backend/.env
+    container_name: cloud-cost-agentic-analyst_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # Syncs your local code to the container so you don't have to rebuild on every code change
+      - ./backend:/app  
+    environment:
+      # Notice we use 'db' instead of 'localhost' so Docker routes it correctly internally
+      - DATABASE_URL=postgresql://admin:securepassword123@db:5432/vectordb
+      - LANGCHAIN_DB_URL=postgresql+psycopg2://admin:securepassword123@db:5432/vectordb
+      - OLLAMA_BASE_URL=http://192.168.1.214:11434
+    depends_on:
+      - db
+
+  # 3. The Frontend (Next.js)
+  frontend:
+    build:
+      context: ./frontend
+    container_name: cloud-cost-agentic-analyst_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      # Syncs your local Next.js code for Hot Module Replacement (HMR)
+      - ./frontend:/app           
+      - /app/node_modules         
+    environment:
+      # Tells the user's browser where to send API requests
+      - NEXT_PUBLIC_API_URL=http://localhost:8000 
+    depends_on:
+      - backend
+
+volumes:
+  pgdata: # Kept your exact volume name

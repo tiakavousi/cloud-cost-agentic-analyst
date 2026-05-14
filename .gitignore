@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Environment / Secrets
+.env
+
+# Data & Outputs (Exclude large datasets and generated plots)
+data/*.csv
+data/*.xlsx
+*.png
+*.jpg
+*.pdf
+
+# Docker
+.docker/
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
+
+# LangChain/LangGraph
+.langchain/
