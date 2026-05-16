@@ -1,0 +1,17 @@
+# Ignore local Python environments
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+
+# Ignore git metadata
+.git/
+.gitignore
+
+# Ignore local IDE settings
+.vscode/
+.idea/
+
+# Ignore local OS junk
+.DS_Store
