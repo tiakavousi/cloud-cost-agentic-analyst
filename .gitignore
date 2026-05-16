@@ -28,3 +28,5 @@ data/*.xlsx
 
 # LangChain/LangGraph
 .langchain/
+
+backend/data/

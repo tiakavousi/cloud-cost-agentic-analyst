@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api.routers import chat, document
+from app.api.routers import chat
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
@@ -15,7 +15,6 @@ app.add_middleware(
 
 # --- ENDPOINTS ---
 app.include_router(chat.router)
-app.include_router(document.router)
 
 @app.get("/")
 def read_root():
